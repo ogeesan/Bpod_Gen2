@@ -14,9 +14,9 @@ end
 
 % If it's already open then raise the existing liquid calibrator window
 if isfield(BpodSystem.GUIHandles, 'LiquidCalibrator')
-    if isfield(BpodSystem.GUIHandles.LiquidCalibrator.GUIHandles, 'MainFig') && ~verLessThan('MATLAB', '8.4')
-        if isgraphics(BpodSystem.GUIHandles.LiquidCalibrator.GUIHandles.MainFig)
-            figure(BpodSystem.GUIHandles.LiquidCalibrator.GUIHandles.MainFig);
+    if isfield(BpodSystem.GUIHandles.LiquidCalibrator.GUIHandles, 'Figure') && ~verLessThan('MATLAB', '8.4')
+        if isgraphics(BpodSystem.GUIHandles.LiquidCalibrator.GUIHandles.Figure)
+            figure(BpodSystem.GUIHandles.LiquidCalibrator.GUIHandles.Figure);
             return;
         end
     end

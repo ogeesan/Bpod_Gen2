@@ -91,6 +91,7 @@ switch op
         vPos = 10;
         hPos = 10;
         maxVPos = 0;
+        % todo: set panel top position to match Bpod Console's position (specifically to make multi-setup window management easier)
         BpodSystem.ProtocolFigures.ParameterGUI = figure('Position', [50 50 450 guiHeight],'name', 'Parameter GUI',...
             'numbertitle', 'off', 'MenuBar', 'none', 'Resize', 'on');
         paramNum = 1;

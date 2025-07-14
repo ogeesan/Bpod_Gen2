@@ -60,7 +60,7 @@ methods
 
         % Create the user interface
         obj.GUIHandles = struct();
-        obj.GUIHandles.MainFig =  figure('Position',[150 180 830 370],'name','Bpod liquid calibrator','numbertitle','off', 'MenuBar', 'none', 'Resize', 'off', 'CloseRequestFcn', @(src,event) obj.close());
+        obj.GUIHandles.Figure =  figure('Position',[150 180 830 370],'name','Bpod liquid calibrator','numbertitle','off', 'MenuBar', 'none', 'Resize', 'off', 'CloseRequestFcn', @(src,event) obj.close());
         ha = axes('units','normalized', 'position',[0 0 1 1]);
         uistack(ha,'bottom');
         BG = imread('RewardCalMain.bmp');
@@ -98,7 +98,7 @@ methods
     function close(obj)
         % Close the UI
         try
-            delete(obj.GUIHandles.MainFig);
+            delete(obj.GUIHandles.Figure);
         catch
         end
 
