@@ -45,7 +45,6 @@ end
 BpodLib.launcher.createDefaultSettingsFile(BpodSystem.Path.DataFolder, subjectName, protocolName);
 settingsFolderPath = fullfile(BpodSystem.Path.DataFolder, subjectName, protocolName, 'Session Settings');
 candidateSettingsFiles = dir(fullfile(settingsFolderPath, '*.mat'));
-
 settingsFileNames = {candidateSettingsFiles.name};
 if ~ismember([settingsName '.mat'], settingsFileNames)
     error(['Error: Settings file: ' settingsName '.mat does not exist for test subject: '... 
@@ -54,7 +53,7 @@ end
 settingsFilePath = fullfile(BpodSystem.Path.DataFolder, subjectName, protocolName,... 
     'Session Settings', [settingsName '.mat']);
 
-% Set BpodSystem status, protocol and path fields for new session
+% Set BpodSystem status, protocol, and path fields for new session
 BpodSystem.Status.Live = 1;
 BpodSystem.Status.LastEvent = 0;
 BpodSystem.Path.Settings = settingsFilePath;
@@ -65,6 +64,20 @@ settingStruct = load(BpodSystem.Path.Settings);
 F = fieldnames(settingStruct);
 fieldName = F{1};
 BpodSystem.ProtocolSettings = settingStruct.(fieldName);
+
+% Send metadata to Bpod Phone Home program (disabled pending a more stable server)
+% isOnline = BpodSystem.check4Internet();
+% if (isOnline == 1) && (BpodSystem.SystemSettings.PhoneHome == 1)
+    % BpodSystem.BpodPhoneHome(1); % Disabled until server migration. -JS July 2018
+% end
+
+% Set BpodSystem status flags
+BpodSystem.Status.BeingUsed = 1;
+BpodSystem.Status.SessionStartFlag = 1;
+
+% Record session start time
+BpodSystem.ProtocolStartTime = now*100000;
+BpodSystem.resetSessionClock();
 
 % Clear BpodSystem.Data
 BpodSystem.Data = struct;
@@ -105,21 +118,6 @@ if BpodSystem.MachineType > 3
         BpodSystem.Data.Analog.info.TrialData = 'A cell array of Samples. Each cell contains samples captured during a single trial.';
     end
 end
-
-%%
-% Send metadata to Bpod Phone Home program (disabled pending a more stable server)
-% isOnline = BpodSystem.check4Internet();
-% if (isOnline == 1) && (BpodSystem.SystemSettings.PhoneHome == 1)
-    % BpodSystem.BpodPhoneHome(1); % Disabled until server migration. -JS July 2018
-% end
-
-% Set BpodSystem status flags
-BpodSystem.Status.BeingUsed = 1;
-BpodSystem.Status.SessionStartFlag = 1;
-
-% Record session start time
-BpodSystem.ProtocolStartTime = now*100000;
-BpodSystem.resetSessionClock();
 
 %% Prepare GUI
 if ~isempty(BpodSystem.GUIHandles)
